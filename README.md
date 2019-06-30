@@ -1,1 +1,1 @@
-"# discordbot-makegroup-lol" 
+# discordbot-makegroup-lol
