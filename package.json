@@ -1,0 +1,24 @@
+{
+  "name": "discord-ggm-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harv3n/discord-ggm-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harv3n/discord-ggm-bot/issues"
+  },
+  "homepage": "https://github.com/harv3n/discord-ggm-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
