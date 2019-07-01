@@ -1,1 +1,1 @@
-# discordbot-gamemanagement
+# discord-gaming-group-management-bot
