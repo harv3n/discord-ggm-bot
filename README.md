@@ -1,1 +1,1 @@
-# discordbot-makegroup-lol
+# discordbot-gamemanagement
