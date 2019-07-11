@@ -1,36 +1,40 @@
-const { Client, RichEmbed } = require('discord.js');
+const Discord = require('discord.js');
+const Enmap = require('enmap');
+const fs = require('fs');
 
 const { prefix, token } = require('./config/config.json');
 
-const client = new Client();
+const client = new Discord.Client();
 
-const commandGroups = [
-    ['help', 'help commands'],
-    ['mod', 'moderation commands'],
-    ['group', 'group commands']
-]
+fs.readdir("./src/events/", (err, files) => {
+    if (err) return console.error(err);
 
-client.on('ready', () => {
-        console.log(`Client ready; Logged as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
+    console.log('log', `Reading ${files.length} events...`)
+
+    files.forEach(file => {
+        const event = require(`./src/events/${file}`);
+        let eventName = file.split(".")[0];
+
+        console.log('log', `Attempting to load '${eventName}' event...`);
+
+        client.on(eventName, event.bind(null, client));
     });
+});
 
-client.on('message', msg => {
-        if (!msg.content.startsWith(prefix)) return;
+client.commands = new Enmap();
 
-        if (msg.author.id === client.user.id) return;
+fs.readdir("./src/commands/", (err, files) => {
+    if (err) return console.error(err);
 
-        const args = msg.content
-            .slice(prefix.length + 1)
-            .split(/ +/);
-        const commandGroup = args.shift();
+    console.log('log', `Loading ${files.length} commands...`);
 
-        msg.reply(`Command group: ${commandGroup}`)
-        msg.reply(`Arguments: ${args}`);
-
-        commandGroups.map((elements) => {
-            if (elements.includes(commandGroup))
-                msg.reply(`command from group ${commandGroup}`);
-        });
-    });
+    files.forEach(file => {
+        if (!file.endsWith(".js")) return;
+        let props = require(`./src/commands/${file}`);
+        let commandName = file.split(".")[0];
+        console.log('log', `Attempting to load '${commandName}' command...`);
+        client.commands.set(commandName, props);
+    })
+})
 
 client.login(token);
