@@ -23,14 +23,14 @@ fs.readdir("./src/events/", (err, files) => {
 
 client.commands = new Enmap();
 
-fs.readdir("./src/commands/", (err, files) => {
+fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);
 
     console.log('log', `Loading ${files.length} commands...`);
 
     files.forEach(file => {
         if (!file.endsWith(".js")) return;
-        let props = require(`./src/commands/${file}`);
+        let props = require(`./commands/${file}`);
         let commandName = file.split(".")[0];
         console.log('log', `Attempting to load '${commandName}' command...`);
         client.commands.set(commandName, props);

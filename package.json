@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/harv3n/discord-ggm-bot#readme",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "enmap": "^5.0.0",
+    "kayn": "^0.9.11"
   }
 }
