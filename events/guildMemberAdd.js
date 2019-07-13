@@ -1,4 +1,4 @@
-const { defaultChannel } = require('../../config/config.json');
+const { defaultChannel } = require('../config.json');
 
 module.exports = (client, member) => {
     console.log(`${member.displayName} - ${member.id}`);

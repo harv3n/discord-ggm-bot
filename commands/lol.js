@@ -1,5 +1,5 @@
 const { Kayn, REGIONS } = require('kayn');
-const { RGAPI } = require('../config/config.json');
+const { RGAPI } = require('../config.json');
 const kayn = Kayn(RGAPI)({
     region: REGIONS.BRAZIL
 });
