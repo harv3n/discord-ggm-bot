@@ -1,6 +1,7 @@
 {
-    "prefix": "",
+    "prefix": "gm!",
     "token": "",
     "defaultChannel": "",
-    "RGAPI": ""
+    "RGAPI": "",
+    "iconsURI": "http://ddragon.leagueoflegends.com/cdn/6.3.1/img/profileicon/"
 }
