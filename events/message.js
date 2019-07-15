@@ -3,6 +3,8 @@ const { prefix } = require('../config.json');
 module.exports = (client, message) => {
     if (message.author.bot) return;
 
+    console.log('log', `message received from ${message.author}`);
+
     if (message.content.indexOf(prefix) !== 0) return;
 
     const args = message.content.slice(prefix.length +1).split(/ +/g);

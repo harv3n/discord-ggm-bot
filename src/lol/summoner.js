@@ -1,7 +1,18 @@
 const getSummonerByName = async (kayn, summonerName) => {
     try {
         let summoner = {}
+        let wins = 0,
+            kills = 0,
+            deaths = 0,
+            assists = 0
         const { id, accountId, name, summonerLevel, profileIconId } = await kayn.Summoner.by.name(summonerName)
+        const icons = await kayn.DDragon.ProfileIcon.list()
+        // const icon = icons.data.map(icon => {
+        //     if (icon.id === profileIconId) return icon;
+        // })
+        icons.data.map(icon => {
+            console.log('++++++++++++++', icon);
+        });
         const { matches } = await kayn.Matchlist.by
             .accountID(accountId)
         const gamesIds = matches.slice(0, 10).map(({ gameId }) => gameId);
@@ -22,22 +33,24 @@ const getSummonerByName = async (kayn, summonerName) => {
                 let participantId;
                 if (participant.player.summonerName === summonerName) {
                     participantId = participant.participantId;
-                    console.log('nome', participant.player.summonerName);
-                    console.log('participantId', participantId);
                 }
 
                 match.participants.forEach(participant => {
                     if (participant.stats.participantId === participantId) {
-                        summoner.wins += (participant.stats.win === true ? 1 : 0);
-                        summoner.kills += participant.stats.kill;
-                        summoner.deaths += participant.stats.death;
-                        summoner.assists += participant.stats.assists;
+                        wins += (participant.stats.win ? 1 : 0);
+                        kills += participant.stats.kills;
+                        deaths += participant.stats.deaths;
+                        assists += participant.stats.assists;
                     }
                 })
             })
         });
 
-        summoner.kda = summoner.kills + summoner.assists / summoner.deaths;
+        summoner.wins = wins;
+        summoner.kills = kills
+        summoner.deaths = deaths
+        summoner.assists = assists
+        summoner.kda = parseFloat(((summoner.kills + summoner.assists / summoner.deaths) / 10).toFixed(2));
 
         console.log(summoner);
 
