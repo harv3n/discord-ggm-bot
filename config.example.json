@@ -3,5 +3,6 @@
     "token": "",
     "defaultChannel": "",
     "RGAPI": "",
-    "iconsURI": "http://ddragon.leagueoflegends.com/cdn/6.3.1/img/profileicon/"
+    "iconsURI": "http://ddragon.leagueoflegends.com/cdn/9.13.1/img/profileicon/",
+    "championImageURI": "http://ddragon.leagueoflegends.com/cdn/9.13.1/img/champion/"
 }
