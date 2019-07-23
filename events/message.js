@@ -7,7 +7,7 @@ module.exports = (client, message) => {
 
     if (message.content.indexOf(prefix) !== 0) return;
 
-    const args = message.content.slice(prefix.length +1).split(/ +/g);
+    const args = message.content.slice(prefix.length).split(/ +/g);
     const command = args.shift().toLowerCase();
 
     const cmd = client.commands.get(command);

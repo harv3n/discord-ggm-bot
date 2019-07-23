@@ -1,14 +1,15 @@
 const { RichEmbed } = require('discord.js');
-const { Kayn, REGIONS } = require('kayn');
-const { RGAPI, iconsURI } = require('../config.json');
+const embedMessage = new RichEmbed();
 
-const lolEmojis = require('../src/lol/emojis');
+const { RGAPI } = require('../config.json');
+const { Kayn, REGIONS } = require('kayn');
 
 const kayn = Kayn(RGAPI)({
     region: REGIONS.BRAZIL
 });
 
-const Summoner = require('../src/lol/summoner');
+const Summoner = require('../src/lol/Summoner')(kayn);
+const Champions = require('../src/lol/Champions')(kayn);
 
 module.exports = {
     run: async (client, message, args) => {
@@ -16,24 +17,23 @@ module.exports = {
             const command = args.shift();
             if (command === "summoner") {
                 const summonerName = args.join(' ');
-                const summoner = await Summoner.getSummonerByName(kayn, summonerName)
+                
+                await Summoner.getSummoner(summonerName)
+                    .then(res => res.getLeague())
+                    .then(res => res.getLastMatches())
+                    .then(res => res.getTopChampions())
+                    .then(res => res.createChampionsEmojis(message))
+                    .then(res => res.sendEmbed(message, embedMessage))
+                    .then(res => res.clearChampionsEmojis(message))
+                    .then(res => res.logger());
+            }
 
-                if (!summoner) return message.channel.send('Summoner not found!');
-
-                const emojis = await lolEmojis.createEmojisFromChampions(message, summoner.championsMastery);
-
-                const embedMessage = new RichEmbed()
-                    .setColor('#0099ff')
-                    .setTitle(`${summoner.name} / Lv: ${summoner.summonerLevel}`)
-                    .setDescription(`${summoner.tier} ${summoner.rank} (${summoner.leaguePoints} pdl)`)
-                    .setThumbnail(`${iconsURI}${summoner.profileIconId}.png`)
-                    .addField(`Last 10 matches wins:`, `${summoner.wins}/10`, true)
-                    .addField(`KDA:`, `${summoner.kda}`, true)
-                    .addField('Most played champions:', `${emojis[0]} ${emojis[1]} ${emojis[2]}`, true)
-                    .addField('Best roles:', 'roles icon \n(roles winhate here)', true)
-                await message.channel.send(embedMessage);
-
-                lolEmojis.deleteEmojisFromChampions(message, emojis);
+            if (command === "freeweek") {
+                console.log('freeweek')
+                await Champions.freeWeekRotation()
+                    .then(res => res.createChampionsEmojis(message))
+                    .then(res => res.sendEmbed(message, embedMessage))
+                    .then(res => res.clearChampionsEmojis(message));
             }
         } catch (err) {
             console.error(err);
